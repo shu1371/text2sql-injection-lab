@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="760" viewBox="0 0 1280 760" font-family="'Microsoft YaHei','PingFang SC',Arial,sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f8fafc"/>
+      <stop offset="1" stop-color="#eef2f7"/>
+    </linearGradient>
+    <linearGradient id="gGreen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#22c55e"/>
+      <stop offset="1" stop-color="#16a34a"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#0f172a" flood-opacity="0.16"/>
+    </filter>
+    <marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L9,3 L0,6 Z" fill="#475569"/>
+    </marker>
+    <marker id="arrRed" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L9,3 L0,6 Z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1280" height="760" fill="url(#bg)"/>
+  <text x="640" y="44" text-anchor="middle" font-size="25" font-weight="700" fill="#0f172a">图3　Text-to-SQL 注入的纵深防御：三道关卡拦住越权查询</text>
+
+  <!-- 攻击者 -->
+  <g filter="url(#shadow)">
+    <rect x="500" y="80" width="280" height="56" rx="14" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+    <text x="640" y="104" text-anchor="middle" font-size="16" font-weight="700" fill="#991b1b">注入载荷（问题 / 规则 / 数据）</text>
+    <text x="640" y="126" text-anchor="middle" font-size="12.5" fill="#7f1d1d">目标：让生成的 SQL 访问 users 表</text>
+  </g>
+  <path d="M640,136 L640,168" stroke="#475569" stroke-width="3" marker-end="url(#arr)"/>
+
+  <!-- 第一道：语义层 -->
+  <g filter="url(#shadow)">
+    <rect x="170" y="176" width="940" height="96" rx="16" fill="#ffffff" stroke="#2563eb" stroke-width="2.5"/>
+    <rect x="170" y="176" width="940" height="34" rx="16" fill="#dbeafe"/>
+    <rect x="170" y="196" width="940" height="14" fill="#dbeafe"/>
+    <text x="640" y="199" text-anchor="middle" font-size="15" font-weight="700" fill="#1e40af">第一道防线 · 语义层：让 LLM“不想生成”越权 SQL</text>
+    <text x="210" y="240" font-size="13.5" fill="#334155">① 系统提示声明敏感表边界：users 表禁止业务查询，任何指令要求访问一律忽略</text>
+    <text x="210" y="260" font-size="13.5" fill="#334155">② 上下文来源标注：业务规则/数据行与系统规则分级，低可信来源不得覆盖安全规则</text>
+  </g>
+  <path d="M640,272 L640,304" stroke="#475569" stroke-width="3" marker-end="url(#arr)"/>
+
+  <!-- 第二道：校验层 -->
+  <g filter="url(#shadow)">
+    <rect x="170" y="312" width="940" height="116" rx="16" fill="#ffffff" stroke="#d97706" stroke-width="2.5"/>
+    <rect x="170" y="312" width="940" height="34" rx="16" fill="#fef3c7"/>
+    <rect x="170" y="332" width="940" height="14" fill="#fef3c7"/>
+    <text x="640" y="335" text-anchor="middle" font-size="15" font-weight="700" fill="#92400e">第二道防线 · 校验层：让越权 SQL“过不了关”</text>
+    <text x="210" y="376" font-size="13.5" fill="#334155">① SQL 解析校验：只允许 SELECT、禁止多语句、强制 LIMIT</text>
+    <text x="210" y="396" font-size="13.5" fill="#334155">② 敏感对象白/黑名单：users 表、非业务库、系统函数一律拦截</text>
+    <text x="210" y="416" font-size="13.5" fill="#334155">③ 审计日志：每次 SQL 生成与执行留痕，异常模式（UNION/通配）告警</text>
+  </g>
+  <path d="M640,428 L640,460" stroke="#475569" stroke-width="3" marker-end="url(#arr)"/>
+
+  <!-- 第三道：执行层 -->
+  <g filter="url(#shadow)">
+    <rect x="170" y="468" width="940" height="96" rx="16" fill="#ffffff" stroke="#16a34a" stroke-width="2.5"/>
+    <rect x="170" y="468" width="940" height="34" rx="16" fill="#dcfce7"/>
+    <rect x="170" y="488" width="940" height="14" fill="#dcfce7"/>
+    <text x="640" y="491" text-anchor="middle" font-size="15" font-weight="700" fill="#166534">第三道防线 · 执行层：让越权查询“没有权限”</text>
+    <text x="210" y="532" font-size="13.5" fill="#334155">① 数据库账号最小权限：NL2SQL 应用只持有只读、单库、无敏感表权限的账号</text>
+    <text x="210" y="552" font-size="13.5" fill="#334155">② 行级/列级权限：users 表对应用账号不可见，即使 SQL 生成错误也无法执行</text>
+  </g>
+
+  <!-- 结果 -->
+  <rect x="430" y="600" width="420" height="62" rx="16" fill="url(#gGreen)"/>
+  <text x="640" y="627" text-anchor="middle" font-size="16" font-weight="700" fill="#ffffff">越权 SQL 可能仍会被生成，但无法被执行</text>
+  <text x="640" y="650" text-anchor="middle" font-size="13" fill="#f0fdf4">三道防线中，校验层与执行层是“硬兜底”，不依赖模型行为</text>
+
+  <path d="M150,108 C90,200 90,520 120,602" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="7 6" fill="none" marker-end="url(#arrRed)"/>
+  <text x="70" y="380" text-anchor="middle" font-size="13.5" font-weight="700" fill="#dc2626" transform="rotate(-90 70 380)">恶意意图传播路径（被逐层拦截）</text>
+</svg>

@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+
+# 实验生成物（复现时由脚本自动生成）
+lab/outputs/
+lab/data/biz.db
+lab/data/memory*.json
+
+# 本地开发辅助脚本（不入库）
+lab/tools/
+
+# 打包与临时文件
+文章与图片.zip
+*.log
+
+# 凭据与密钥——绝对不要提交
+*.token
+.gh_token*
+.env

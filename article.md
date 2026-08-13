@@ -327,6 +327,8 @@ python experiments.py defense_exec 8            # 防御：SQL 校验器
 ## 8. 附录：完整可复跑代码
 
 > 以下两个文件即为本文实验的全部代码（`lab/text2sql.py` 与 `lab/experiments.py`），零第三方依赖，保存后按第 7 节命令即可复跑。
+>
+> 复现仓库（公开）：https://github.com/shu1371/text2sql-injection-lab
 
 <!-- APPENDIX_CODE_START -->
 #### text2sql.py（lab/text2sql.py）
